@@ -13,18 +13,18 @@ const assert = require('chai').assert;
 const RiskKeywords = ["collide", "crash", "scratch", "bump", "smash", "accident", "scratches"]
 
 describe('risk_rating API', () => {
-    it('GET /risk/claim1', () => {
+    it('GET /risk/claim', () => {
         // Make a GET request to the users route 
-        return request.get('/risk/claim1').expect(200)
+        return request.get('/risk/claim').expect(200)
     });
 
 
     it('POST/ when customers has 0 risk keyword matched', () => {
         let input = [" I have nothing to claim"];
-        return request.post('/risk/claim1')
+        return request.post('/risk/claim')
             .send(input)
             .then((res) => {
-                assert.equal(res.text, 'Your risk rating is 0')
+                assert.equal(res.text, ['Your risk rating is 0'])
             });
     });
 
