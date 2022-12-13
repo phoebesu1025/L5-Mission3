@@ -10,27 +10,33 @@ server.listen(PORT, () => {
     console.log("listening to port", PORT)
 })
 
-const RiskKeywords = ["collide", "crash", "scratch", "bump", "smash", "accident", "scratches"]
+
 // claim1 = ["My only claim was a crash into my house's garage door that left a scratch on my car.  There are no other crashes."]
 // claim2 = ["bad accident, bump, and a lot of scratch."]
 // claim3 = ["I have nothing to claim."]
 let claim_history = []
+const RiskKeywords = ["collide", "crash", "scratch", "bump", "smash", "accident", "scratches", "crashes"]
 
 server.post("/risk/claim", (req, res) => {
     let stringifyClaim = JSON.stringify(req.body)
     let claim_history_split = stringifyClaim.split(/[.,!,?, ,"]/)
     new_claim_history = [...claim_history, ...req.body]
     const intersection = RiskKeywords.filter(element => claim_history_split.includes(element));
-    // const finalArray = JSON.parse(intersection)
-    console.log(intersection)
+
     let risk_rating = intersection.length
 
 
+    if (new_claim_history == "") {
+        res.send('error: "Please enter your claim history"')
+    } else {
+        res.send(`Your risk rating is ${risk_rating}`)
+    }
+
+    console.log(intersection)
     console.log(`req.body is : ${req.body}`)
     console.log("claim_history_split are:")
     console.log(claim_history_split)
     console.log(`new_claim_history is : ${new_claim_history}`)
-    res.send(`Your risk rating is ${risk_rating}`)
 })
 
 
